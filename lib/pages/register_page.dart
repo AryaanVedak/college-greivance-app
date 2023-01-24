@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -18,6 +19,9 @@ class _RegisterPageState extends State<RegisterPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
+  final _firstNameContoller = TextEditingController();
+  final _lastNameController = TextEditingController();
+  final _departmentController = TextEditingController();
 
   @override
   void dispose() {
@@ -25,16 +29,38 @@ class _RegisterPageState extends State<RegisterPage> {
     _emailController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
+    _firstNameContoller.dispose();
+    _lastNameController.dispose();
+    _departmentController.dispose();
     super.dispose();
   }
 
   Future signUp() async {
     if (passwordConfirmed()) {
+      // create user
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
       );
+
+      // add user details
+      addUserDetails(
+        _firstNameContoller.text.trim(),
+        _lastNameController.text.trim(),
+        _emailController.text.trim(),
+        _departmentController.text.trim(),
+      );
     }
+  }
+
+  Future addUserDetails(String firstName, String lastName, String email,
+      String department) async {
+    await FirebaseFirestore.instance.collection('users').add({
+      'first name': firstName,
+      'last name': lastName,
+      'email': email,
+      'department': department,
+    });
   }
 
   bool passwordConfirmed() {
@@ -73,6 +99,81 @@ class _RegisterPageState extends State<RegisterPage> {
                 height: 40,
               ),
 
+              // First Name text field
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 25),
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      border: Border.all(color: Colors.white),
+                      borderRadius: BorderRadius.circular(12)),
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 10.0),
+                    child: TextField(
+                      controller: _firstNameContoller,
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        hintText: 'First Name',
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+
+              const SizedBox(
+                height: 20,
+              ),
+
+              // Last Name text field
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 25),
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      border: Border.all(color: Colors.white),
+                      borderRadius: BorderRadius.circular(12)),
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 10.0),
+                    child: TextField(
+                      controller: _lastNameController,
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        hintText: 'Last Name',
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+
+              const SizedBox(
+                height: 20,
+              ),
+
+              // Department text field
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 25),
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      border: Border.all(color: Colors.white),
+                      borderRadius: BorderRadius.circular(12)),
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 10.0),
+                    child: TextField(
+                      controller: _departmentController,
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        hintText: 'Department',
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+
+              const SizedBox(
+                height: 20,
+              ),
+
               // Login text field
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -86,8 +187,6 @@ class _RegisterPageState extends State<RegisterPage> {
                     child: TextField(
                       controller: _emailController,
                       decoration: const InputDecoration(
-                        prefixIcon: Icon(Icons.email,
-                            color: Color.fromARGB(255, 152, 71, 233)),
                         border: InputBorder.none,
                         hintText: 'Email',
                       ),
@@ -114,8 +213,6 @@ class _RegisterPageState extends State<RegisterPage> {
                       controller: _passwordController,
                       obscureText: true,
                       decoration: const InputDecoration(
-                        prefixIcon: Icon(Icons.password,
-                            color: Color.fromARGB(255, 152, 71, 233)),
                         border: InputBorder.none,
                         hintText: 'Password',
                       ),
@@ -142,8 +239,6 @@ class _RegisterPageState extends State<RegisterPage> {
                       controller: _confirmPasswordController,
                       obscureText: true,
                       decoration: const InputDecoration(
-                        prefixIcon: Icon(Icons.password,
-                            color: Color.fromARGB(255, 152, 71, 233)),
                         border: InputBorder.none,
                         hintText: 'Confirm Password',
                       ),
@@ -196,7 +291,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   GestureDetector(
                     onTap: widget.showLoginPage,
                     child: Text(
-                      " Login Now",
+                      "  Login Now",
                       style: GoogleFonts.poppins(
                           color: Colors.blue, fontWeight: FontWeight.bold),
                     ),

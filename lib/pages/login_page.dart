@@ -153,7 +153,7 @@ class _LoginPageState extends State<LoginPage> {
                   GestureDetector(
                     onTap: widget.showRegisterPage,
                     child: Text(
-                      " Register Now",
+                      "  Register Now",
                       style: GoogleFonts.poppins(
                           color: Colors.blue, fontWeight: FontWeight.bold),
                     ),
