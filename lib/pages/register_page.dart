@@ -1,33 +1,49 @@
-import 'dart:ffi';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class RegisterPage extends StatefulWidget {
+  final VoidCallback showLoginPage;
+  const RegisterPage({
+    Key? key,
+    required this.showLoginPage,
+  }) : super(key: key);
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
   //text controllers
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-
-  Future signIn() async {
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: _emailController.text.trim(),
-        password: _passwordController.text.trim());
-  }
+  final _confirmPasswordController = TextEditingController();
 
   @override
   void dispose() {
     //TODO implement dispose
     _emailController.dispose();
     _passwordController.dispose();
+    _confirmPasswordController.dispose();
     super.dispose();
+  }
+
+  Future signUp() async {
+    if (passwordConfirmed()) {
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+    }
+  }
+
+  bool passwordConfirmed() {
+    if (_passwordController.text.trim() ==
+        _confirmPasswordController.text.trim()) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   @override
@@ -42,7 +58,7 @@ class _LoginPageState extends State<LoginPage> {
             children: [
               // Login text
               Text(
-                "Login",
+                "Registeration",
                 style: GoogleFonts.poppins(
                     fontWeight: FontWeight.w700, fontSize: 36),
               ),
@@ -50,8 +66,8 @@ class _LoginPageState extends State<LoginPage> {
                 height: 10,
               ),
               Text(
-                "Welcome to Top G app",
-                style: GoogleFonts.poppins(fontSize: 24, color: Colors.black54),
+                "Register below with your details",
+                style: GoogleFonts.poppins(fontSize: 22, color: Colors.black54),
               ),
               const SizedBox(
                 height: 40,
@@ -109,6 +125,34 @@ class _LoginPageState extends State<LoginPage> {
               ),
 
               const SizedBox(
+                height: 20,
+              ),
+
+              // Confirm password text field
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 25),
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      border: Border.all(color: Colors.white),
+                      borderRadius: BorderRadius.circular(12)),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 10.0),
+                    child: TextField(
+                      controller: _confirmPasswordController,
+                      obscureText: true,
+                      decoration: const InputDecoration(
+                        prefixIcon: Icon(Icons.password,
+                            color: Color.fromARGB(255, 152, 71, 233)),
+                        border: InputBorder.none,
+                        hintText: 'Confirm Password',
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+
+              const SizedBox(
                 height: 40,
               ),
 
@@ -116,7 +160,7 @@ class _LoginPageState extends State<LoginPage> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25),
                 child: GestureDetector(
-                  onTap: signIn,
+                  onTap: signUp,
                   child: Container(
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
@@ -125,7 +169,7 @@ class _LoginPageState extends State<LoginPage> {
                     child: Center(
                       child: Center(
                           child: Text(
-                        'Sign in',
+                        'Sign Up',
                         style: GoogleFonts.poppins(
                             color: Colors.white,
                             fontWeight: FontWeight.w500,
@@ -146,13 +190,16 @@ class _LoginPageState extends State<LoginPage> {
                 // ignore: prefer_const_literals_to_create_immutables
                 children: [
                   Text(
-                    "Don't have an account?",
+                    "I have an account?",
                     style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
                   ),
-                  Text(
-                    " Register Now",
-                    style: GoogleFonts.poppins(
-                        color: Colors.blue, fontWeight: FontWeight.bold),
+                  GestureDetector(
+                    onTap: widget.showLoginPage,
+                    child: Text(
+                      " Login Now",
+                      style: GoogleFonts.poppins(
+                          color: Colors.blue, fontWeight: FontWeight.bold),
+                    ),
                   )
                 ],
               ),
