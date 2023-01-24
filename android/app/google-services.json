@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1028995266767",
+    "project_id": "top-g-app",
+    "storage_bucket": "top-g-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1028995266767:android:778fb7b51437378f50dfba",
+        "android_client_info": {
+          "package_name": "com.example.top_g_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1028995266767-e2gtl80r5aeh0m3a6t84eb8iigjcsken.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCmd71zTAHrjOivZ20xxrsBS1aJ2_o0UYg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1028995266767-e2gtl80r5aeh0m3a6t84eb8iigjcsken.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
