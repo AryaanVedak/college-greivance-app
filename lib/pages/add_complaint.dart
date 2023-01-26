@@ -16,6 +16,7 @@ class _AddComplaintState extends State<AddComplaint> {
 
   @override
   void dispose() {
+    super.dispose();
     _complaintTitle.dispose();
     _complaintContent.dispose();
   }
