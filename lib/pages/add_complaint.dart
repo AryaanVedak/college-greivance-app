@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:top_g_app/pages/login_page.dart';
 
 class AddComplaint extends StatefulWidget {
   const AddComplaint({super.key});
@@ -26,7 +27,9 @@ class _AddComplaintState extends State<AddComplaint> {
       _complaintTitle.text.trim(),
       _complaintContent.text.trim(),
     );
+    // ignore: use_build_context_synchronously
     Navigator.pop(context);
+    // FirebaseAuth.instance.signOut();
   }
 
   Future addComplaintDetails(
@@ -181,10 +184,6 @@ class _AddComplaintState extends State<AddComplaint> {
               padding: const EdgeInsets.symmetric(horizontal: 100),
               child: InkWell(
                 onTap: postComplaint,
-                // child: InkWell(
-                //   onTap: (() {
-                //     Navigator.pop(context);
-                //   }),
                 child: Container(
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(

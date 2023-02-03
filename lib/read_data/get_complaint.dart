@@ -5,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 class GetUserComplaint extends StatelessWidget {
   final String documentId;
 
-  GetUserComplaint({required this.documentId});
+  const GetUserComplaint({super.key, required this.documentId});
 
   @override
   Widget build(BuildContext context) {
