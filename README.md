@@ -1,4 +1,4 @@
-# top_g_app
+# College Grievance App
 
 A new Flutter project.
 
